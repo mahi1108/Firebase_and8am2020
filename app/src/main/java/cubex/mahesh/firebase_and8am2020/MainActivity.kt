@@ -121,7 +121,8 @@ class MainActivity : AppCompatActivity() {
                     password.text.toString()).addOnCompleteListener {
                         if(it.isSuccessful){
                             _fromLogin = true
-                            sendOTP()
+                           sendOTP()
+
                         }else{
                             Toast.makeText(this@MainActivity,
                                 "Invalid user credentials...",
