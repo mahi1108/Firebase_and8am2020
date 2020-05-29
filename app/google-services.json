@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "219200995165",
+    "firebase_url": "https://fir-and8am2020.firebaseio.com",
+    "project_id": "fir-and8am2020",
+    "storage_bucket": "fir-and8am2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219200995165:android:e9c263a07d5ee033a032b4",
+        "android_client_info": {
+          "package_name": "cubex.mahesh.firebase_and8am2020"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219200995165-natfp2165hs5c3kj4n88b7ij03v50hbv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cubex.mahesh.firebase_and8am2020",
+            "certificate_hash": "87c7b535d40bab927d8b97a042cba717cfa81f1f"
+          }
+        },
+        {
+          "client_id": "219200995165-c4ld86n4ndo3i1jb3jedhgf70j9tu5n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvG2USwFNxaDPHJnujLLEHSA7rZHIT_cY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219200995165-c4ld86n4ndo3i1jb3jedhgf70j9tu5n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
