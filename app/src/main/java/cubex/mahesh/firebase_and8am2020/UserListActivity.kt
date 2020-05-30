@@ -2,6 +2,7 @@ package cubex.mahesh.firebase_and8am2020
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -9,14 +10,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_user_list.*
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class UserListActivity : AppCompatActivity() {
-
+    var list = mutableListOf<UserData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_list)
-
-        var list = mutableListOf<UserData>()
 
         var lManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL,false)
@@ -67,11 +71,108 @@ class UserListActivity : AppCompatActivity() {
     }
 
     fun send(v:View){
-
+            var fcm_tokens = mutableListOf<String>()
+            for(user in list){
+                if(user.isSelected){
+                    fcm_tokens.add(user.fcm_token)
+                }
+            }
+        sendFcmMessageToAll(msg.text.toString(), fcm_tokens)
     }
 
     fun sendToAll(v:View)
     {
+        var fcm_tokens = mutableListOf<String>()
+        for(user in list){
+                fcm_tokens.add(user.fcm_token)
+        }
+        sendFcmMessageToAll(msg.text.toString(), fcm_tokens)
+    }
 
+    fun sendFcmMessage(token:String?, msg:String?)
+    {
+        var jsonObjec: JSONObject? = null
+        var bodydata:String = msg!!
+
+        jsonObjec =  JSONObject()
+        var list = mutableListOf<String>()
+        list.add(token!!)
+
+        var   jsonArray: JSONArray = JSONArray(list)
+        jsonObjec.put("registration_ids", jsonArray);
+        var jsonObjec2: JSONObject = JSONObject()
+        jsonObjec2.put("body", bodydata);
+        jsonObjec2.put("title", "Text Message from Android 8AM2020-INDI")
+        jsonObjec2.put("fcm_type", "text")
+        jsonObjec.put("notification", jsonObjec2);
+
+        jsonObjec.put("time_to_live", 172800);
+        jsonObjec.put("priority", "HIGH");
+
+        println("*************")
+        print(jsonObjec)
+        println("*************")
+
+
+        val client = OkHttpClient()
+        val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+        val body = RequestBody.create(JSON, jsonObjec.toString())
+        val request = Request.Builder()
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Authorization", "key=AAAAMwllv10:APA91bEfjwDXakiUAK77siPVFH6DzYPUal0joUAg6JZ40UZjShRK2rsQLZOqxdjcD67-ci7FW-eJCmOGmxnVTe479B1qYZafto_i8cuihHaQvHylvatqz-pLY68eIGt2Sv2xTFVnS_Y4")
+            .url("https://fcm.googleapis.com/fcm/send")
+            .post(body)
+            .build()
+        val call = client.newCall(request)
+        call.enqueue(object:Callback{
+            override fun onFailure(call: Call, e: IOException) {
+            }
+            override fun onResponse(call: Call, response: Response) {
+            }
+        })
+    }
+
+    fun sendFcmMessageToAll(msg:String,fcm_tokens_list:MutableList<String>)
+    {
+        var bodydata:String = msg
+
+        var  jsonObjec =  JSONObject()
+
+        var   jsonArray: JSONArray = JSONArray(fcm_tokens_list)
+        jsonObjec.put("registration_ids", jsonArray);
+        var jsonObjec2: JSONObject = JSONObject()
+        jsonObjec2.put("body", bodydata);
+        jsonObjec2.put("title", "Text Message from And8AM2020-NAll ")
+        jsonObjec2.put("image_url","https://st.depositphotos.com/1020482/3088/i/950/depositphotos_30885339-stock-photo-android-with-adjustable-wrench-technology.jpg")
+        jsonObjec.put("notification", jsonObjec2);
+
+        jsonObjec.put("time_to_live", 172800);
+        jsonObjec.put("priority", "HIGH");
+        jsonObjec.put("content_available", true);
+
+
+        println("*************")
+        print(jsonObjec)
+        println("*************")
+
+
+        val client = OkHttpClient()
+        val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+        val body = RequestBody.create(JSON, jsonObjec.toString())
+        val request = Request.Builder()
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Authorization", "key=AAAAMwllv10:APA91bEfjwDXakiUAK77siPVFH6DzYPUal0joUAg6JZ40UZjShRK2rsQLZOqxdjcD67-ci7FW-eJCmOGmxnVTe479B1qYZafto_i8cuihHaQvHylvatqz-pLY68eIGt2Sv2xTFVnS_Y4")
+            .url("https://fcm.googleapis.com/fcm/send")
+            .post(body)
+            .build()
+        val call = client.newCall(request)
+        call.enqueue(object:Callback{
+            override fun onFailure(call: Call, e: IOException) {
+
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+            }
+        })
     }
 }

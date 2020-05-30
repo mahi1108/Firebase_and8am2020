@@ -8,5 +8,6 @@ class MyFCMService :  FirebaseMessagingService(){
     override fun onMessageReceived(msg: RemoteMessage?) {
         super.onMessageReceived(msg)
         Log.i("msg","FCM Msg Payload : "+ msg?.data)
+
     }
 }

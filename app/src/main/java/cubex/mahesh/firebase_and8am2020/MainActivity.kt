@@ -130,4 +130,11 @@ class MainActivity : AppCompatActivity() {
                         }
             }
     }
+
+    fun showAdds(v:View)
+    {
+        var i = Intent(this,
+            AddsActivity::class.java)
+        startActivity(i)
+    }
 }
